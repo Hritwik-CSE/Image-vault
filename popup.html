@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ImageVault Pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --surface2: #1a1a24;
+      --border: #2a2a3a;
+      --accent: #7c5cfc;
+      --accent2: #fc5c7d;
+      --accent3: #5cf4fc;
+      --text: #f0eeff;
+      --text2: #8080a0;
+      --success: #4dffb4;
+      --warning: #ffd24d;
+      --glow: rgba(124, 92, 252, 0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      width: 420px;
+      min-height: 560px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      overflow: hidden;
+    }
+
+    /* Animated background grid */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(124,92,252,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(124,92,252,0.04) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container { position: relative; z-index: 1; }
+
+    /* Header */
+    .header {
+      padding: 18px 20px 14px;
+      background: linear-gradient(135deg, rgba(124,92,252,0.15), rgba(252,92,125,0.08));
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-icon {
+      width: 34px; height: 34px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+      box-shadow: 0 0 20px var(--glow);
+    }
+
+    .logo-text {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+
+    .logo-sub {
+      font-size: 9px;
+      color: var(--accent);
+      letter-spacing: 2px;
+      font-family: 'DM Mono', monospace;
+      font-weight: 500;
+      margin-top: 1px;
+    }
+
+    .status-pill {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      padding: 4px 10px;
+      background: rgba(77, 255, 180, 0.1);
+      color: var(--success);
+      border: 1px solid rgba(77, 255, 180, 0.3);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .status-dot {
+      width: 6px; height: 6px;
+      background: var(--success);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    /* Stats bar */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      padding: 12px 20px;
+      gap: 1px;
+      background: var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stat {
+      background: var(--surface);
+      padding: 10px 12px;
+      text-align: center;
+    }
+
+    .stat:first-child { border-radius: 8px 0 0 8px; }
+    .stat:last-child { border-radius: 0 8px 8px 0; }
+
+    .stat-value {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+      font-family: 'DM Mono', monospace;
+    }
+
+    .stat-label {
+      font-size: 9px;
+      color: var(--text2);
+      margin-top: 3px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-family: 'DM Mono', monospace;
+    }
+
+    /* Controls */
+    .controls {
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .control-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 11px 16px;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Syne', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #9b7cff);
+      color: white;
+      box-shadow: 0 4px 15px var(--glow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px var(--glow);
+    }
+
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-secondary {
+      background: var(--surface2);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .btn-danger {
+      background: rgba(252,92,125,0.1);
+      color: var(--accent2);
+      border: 1px solid rgba(252,92,125,0.3);
+    }
+
+    .btn-danger:hover {
+      background: rgba(252,92,125,0.2);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #00c853, #4dffb4);
+      color: #001a0d;
+      font-weight: 700;
+    }
+
+    .btn-success:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(77,255,180,0.3);
+    }
+
+    /* Toggle options */
+    .options-panel {
+      padding: 0 20px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: var(--surface);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      transition: border-color 0.2s;
+    }
+
+    .option-row:hover { border-color: var(--accent); }
+
+    .option-info { display: flex; align-items: center; gap: 10px; }
+
+    .option-icon {
+      width: 28px; height: 28px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+    }
+
+    .opt-purple { background: rgba(124,92,252,0.2); }
+    .opt-pink { background: rgba(252,92,125,0.2); }
+    .opt-cyan { background: rgba(92,244,252,0.2); }
+    .opt-gold { background: rgba(255,210,77,0.2); }
+
+    .option-text { font-size: 12px; font-weight: 600; }
+    .option-desc { font-size: 10px; color: var(--text2); font-family: 'DM Mono', monospace; margin-top: 1px; }
+
+    /* Toggle switch */
+    .toggle {
+      position: relative;
+      width: 36px; height: 20px;
+    }
+
+    .toggle input { opacity: 0; width: 0; height: 0; }
+
+    .toggle-slider {
+      position: absolute;
+      inset: 0;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .toggle-slider::before {
+      content: '';
+      position: absolute;
+      width: 14px; height: 14px;
+      left: 2px; top: 2px;
+      background: var(--text2);
+      border-radius: 50%;
+      transition: all 0.3s;
+    }
+
+    .toggle input:checked + .toggle-slider {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .toggle input:checked + .toggle-slider::before {
+      transform: translateX(16px);
+      background: white;
+    }
+
+    /* Image grid */
+    .section-header {
+      padding: 10px 20px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text2);
+      font-family: 'DM Mono', monospace;
+    }
+
+    .badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      padding: 2px 8px;
+      background: rgba(124,92,252,0.2);
+      color: var(--accent);
+      border-radius: 20px;
+      border: 1px solid rgba(124,92,252,0.3);
+    }
+
+    .images-container {
+      padding: 0 20px;
+      max-height: 220px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+
+    .images-container::-webkit-scrollbar { width: 4px; }
+    .images-container::-webkit-scrollbar-track { background: transparent; }
+    .images-container::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+
+    .image-item {
+      position: relative;
+      aspect-ratio: 1;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: var(--surface2);
+    }
+
+    .image-item:hover { border-color: var(--accent); transform: scale(1.03); }
+    .image-item.selected { border-color: var(--accent); }
+    .image-item.selected::after {
+      content: '✓';
+      position: absolute;
+      inset: 0;
+      background: rgba(124,92,252,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .image-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+
+    .watermark-badge {
+      position: absolute;
+      top: 3px; right: 3px;
+      background: rgba(252,92,125,0.9);
+      color: white;
+      font-size: 7px;
+      font-family: 'DM Mono', monospace;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 30px 20px;
+      color: var(--text2);
+    }
+
+    .empty-icon { font-size: 32px; margin-bottom: 8px; }
+    .empty-text { font-size: 12px; font-family: 'DM Mono', monospace; }
+
+    /* Progress */
+    .progress-wrap {
+      padding: 0 20px 10px;
+      display: none;
+    }
+
+    .progress-label {
+      font-size: 10px;
+      font-family: 'DM Mono', monospace;
+      color: var(--text2);
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .progress-bar {
+      height: 4px;
+      background: var(--surface2);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 4px;
+      width: 0%;
+      transition: width 0.3s;
+    }
+
+    /* Footer */
+    .footer {
+      padding: 12px 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-text {
+      font-size: 9px;
+      color: var(--text2);
+      font-family: 'DM Mono', monospace;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 10px;
+    }
+
+    .footer-link {
+      font-size: 9px;
+      font-family: 'DM Mono', monospace;
+      color: var(--accent);
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    /* Notification */
+    .notif {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(60px);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      padding: 8px 16px;
+      border-radius: 20px;
+      white-space: nowrap;
+      transition: transform 0.3s ease;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+
+    .notif.show { transform: translateX(-50%) translateY(0); }
+    .notif.success { border-color: var(--success); color: var(--success); }
+    .notif.error { border-color: var(--accent2); color: var(--accent2); }
+
+    /* Loader */
+    .loading-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(10,10,15,0.9);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .loading-overlay.active { display: flex; }
+
+    .spinner {
+      width: 40px; height: 40px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-text {
+      font-size: 12px;
+      color: var(--text2);
+      font-family: 'DM Mono', monospace;
+    }
+
+    /* Divider */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0 20px;
+    }
+
+    /* Format selector */
+    .format-bar {
+      padding: 10px 20px;
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .format-label {
+      font-size: 10px;
+      font-family: 'DM Mono', monospace;
+      color: var(--text2);
+      white-space: nowrap;
+    }
+
+    .format-btn {
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text2);
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .format-btn.active, .format-btn:hover {
+      background: rgba(124,92,252,0.2);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="logo">
+        <div class="logo-icon">⬇</div>
+        <div>
+          <div class="logo-text">ImageVault</div>
+          <div class="logo-sub">PRO DOWNLOADER</div>
+        </div>
+      </div>
+      <div class="status-pill">
+        <div class="status-dot"></div>
+        ACTIVE
+      </div>
+    </div>
+
+    <!-- Stats bar -->
+    <div class="stats-bar">
+      <div class="stat">
+        <div class="stat-value" id="stat-found">0</div>
+        <div class="stat-label">Found</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" id="stat-selected">0</div>
+        <div class="stat-label">Selected</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" id="stat-downloaded">0</div>
+        <div class="stat-label">Saved</div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+      <div class="control-row">
+        <button class="btn btn-primary" id="btn-scan">
+          <span>🔍</span> Scan Page
+        </button>
+        <button class="btn btn-secondary" id="btn-select-all">
+          <span>☑</span> Select All
+        </button>
+      </div>
+      <div class="control-row">
+        <button class="btn btn-success" id="btn-download" disabled>
+          <span>⬇</span> Download Selected
+        </button>
+        <button class="btn btn-danger" id="btn-clear">
+          <span>✕</span> Clear
+        </button>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Options -->
+    <div class="options-panel">
+      <div class="option-row">
+        <div class="option-info">
+          <div class="option-icon opt-pink">🚫</div>
+          <div>
+            <div class="option-text">Watermark Removal</div>
+            <div class="option-desc">AI-powered detection & removal</div>
+          </div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="opt-watermark" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="option-row">
+        <div class="option-info">
+          <div class="option-icon opt-purple">⬆</div>
+          <div>
+            <div class="option-text">Max Resolution</div>
+            <div class="option-desc">Upscale to highest available quality</div>
+          </div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="opt-hq" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="option-row">
+        <div class="option-info">
+          <div class="option-icon opt-cyan">🖼</div>
+          <div>
+            <div class="option-text">Skip Tiny Images</div>
+            <div class="option-desc">Ignore images under 100×100px</div>
+          </div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="opt-skip-small" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="option-row">
+        <div class="option-info">
+          <div class="option-icon opt-gold">⚡</div>
+          <div>
+            <div class="option-text">Lazy-Load Images</div>
+            <div class="option-desc">Capture data-src & srcset images</div>
+          </div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="opt-lazy" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Format bar -->
+    <div class="format-bar">
+      <span class="format-label">FORMAT:</span>
+      <button class="format-btn active" data-fmt="original">ORIGINAL</button>
+      <button class="format-btn" data-fmt="png">PNG</button>
+      <button class="format-btn" data-fmt="jpg">JPG</button>
+      <button class="format-btn" data-fmt="webp">WEBP</button>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Image list -->
+    <div class="section-header">
+      <span class="section-title">Detected Images</span>
+      <span class="badge" id="img-count">0 images</span>
+    </div>
+
+    <div class="images-container">
+      <div class="empty-state" id="empty-state">
+        <div class="empty-icon">🖼</div>
+        <div class="empty-text">Click "Scan Page" to detect images</div>
+      </div>
+      <div class="image-grid" id="image-grid" style="display:none;"></div>
+    </div>
+
+    <!-- Progress -->
+    <div class="progress-wrap" id="progress-wrap">
+      <div class="progress-label">
+        <span id="progress-text">Processing...</span>
+        <span id="progress-pct">0%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="footer-text">ImageVault Pro v1.0</div>
+      <div class="footer-links">
+        <a class="footer-link" id="link-settings">⚙ Settings</a>
+        <a class="footer-link" id="link-history">📁 History</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Loading overlay -->
+  <div class="loading-overlay" id="loading">
+    <div class="spinner"></div>
+    <div class="loading-text" id="loading-text">Scanning page...</div>
+  </div>
+
+  <!-- Notification -->
+  <div class="notif" id="notif"></div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
