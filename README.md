@@ -1,7 +1,7 @@
 # Image-vault
 # 🖼 ImageVault Pro — Browser Extension
 
-A powerful Chrome/Edge extension for downloading high-quality images from any website, with AI-powered watermark removal.
+A powerful Browser extension for downloading high-quality images from any website, with AI-powered watermark removal.
 
 ---
 
