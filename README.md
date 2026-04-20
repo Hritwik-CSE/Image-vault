@@ -5,7 +5,7 @@ A powerful Browser extension for downloading high-quality images from any websit
 
 ---
 
-## ✨ Features
+## Features
 
 - **Scan any page** — Detects all images including lazy-loaded, CSS backgrounds, `<picture>` sources, SVGs, and Open Graph images
 - **Watermark Removal** — Advanced algorithm detects and removes semi-transparent watermarks (text overlays, logos, copyright stamps)
@@ -18,7 +18,7 @@ A powerful Browser extension for downloading high-quality images from any websit
 
 ---
 
-## 📦 Installation
+## Installation
 
 ### Method 1: Load Unpacked (Developer Mode)
 1. Open Chrome and go to `chrome://extensions/`
@@ -34,7 +34,7 @@ A powerful Browser extension for downloading high-quality images from any websit
 
 ---
 
-## 🚀 How to Use
+## How to Use
 
 ### Scan & Download
 1. Click the **ImageVault** icon in your toolbar
@@ -54,7 +54,7 @@ A powerful Browser extension for downloading high-quality images from any websit
 
 ---
 
-## ⚙️ Options
+## Options
 
 | Option | Description |
 |--------|-------------|
@@ -65,7 +65,7 @@ A powerful Browser extension for downloading high-quality images from any websit
 
 ---
 
-## 🔧 Watermark Removal — How It Works
+## Watermark Removal — How It Works
 
 The watermark removal uses a multi-step canvas-based algorithm:
 
@@ -79,7 +79,7 @@ The watermark removal uses a multi-step canvas-based algorithm:
 
 ---
 
-## 📁 File Structure
+## File Structure
 
 ```
 image-downloader-extension/
@@ -98,7 +98,7 @@ image-downloader-extension/
 
 ---
 
-## 🛡️ Permissions
+## Permissions
 
 | Permission | Why |
 |------------|-----|
@@ -111,7 +111,7 @@ image-downloader-extension/
 
 ---
 
-## ⚠️ Notes
+## Notes
 
 - Downloaded images are saved to your **Downloads/ImageVault/** folder
 - Some images may be protected by CORS and will fall back to direct download
